@@ -112,6 +112,13 @@ public:
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
+	
+	//										Methods:
+	void print()const
+	{
+		Human::print();
+		cout << speciality + " " + group << " " << rating << " " << attendance << endl;
+	}
 };
 
 #define TEACHER_TAKE_PARAMETERS const std::string& speciality, unsigned experience
@@ -147,6 +154,44 @@ public:
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
+
+	//											Methods:
+	void print()const
+	{
+		Human::print();
+		cout << speciality << " " << experience << endl;
+	}
+};
+
+class Graduate :public Student
+{
+	std::string subject;		//Тема дипломного проекта
+public:
+	const std::string& get_subject()const
+	{
+		return subject;
+	}
+	void set_subject(const std::string& subject)
+	{
+		this->subject = subject;
+	}
+	//							Constructors:
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject) :Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
+	{
+		set_subject(subject);
+		cout << "GConstructor:\t" << this << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << this << endl;
+	}
+
+	//							Methods
+	void print()const
+	{
+		Student::print();
+		cout << subject << endl;
+	}
 };
 
 void main()
@@ -154,6 +199,12 @@ void main()
 	setlocale(LC_ALL, "");
 	Human hm("Тупенко", "Василий", 18);
 	hm.print();
+	Student st("Pinkman", "Jessie", 28, "Chemistry", "WW_01", 90, 85);
+	st.print();
+	Teacher t("White", "Walter", 50, "Chemistri", 20);
+	t.print();
+	Graduate gr("Shrader", "Hank", 40, "Criminalistic", "OBN", 90, 90, "How to catch Heisenberg");
+	gr.print();
 }
 
 /*
