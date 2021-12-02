@@ -46,13 +46,13 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
 
 	//								Nethods:
-	void print()const
+	virtual void print()const
 	{
 		cout << last_name << " " << first_name << " " << age << endl;
 	}
@@ -112,7 +112,7 @@ public:
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
-	
+
 	//										Methods:
 	void print()const
 	{
@@ -194,9 +194,13 @@ public:
 	}
 };
 
+//#define INHERITANCE_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+
+#ifdef INHERITANCE_CHECK
 	Human hm("Тупенко", "Василий", 18);
 	hm.print();
 	Student st("Pinkman", "Jessie", 28, "Chemistry", "WW_01", 90, 85);
@@ -205,6 +209,31 @@ void main()
 	t.print();
 	Graduate gr("Shrader", "Hank", 40, "Criminalistic", "OBN", 90, 90, "How to catch Heisenberg");
 	gr.print();
+#endif // INHERITANCE_CHECK
+
+	//Generalisation(обобщение):
+	Human* group[] =
+	{
+		new Student("Pinkman","Jessie",25,"Chemistry","WW_011",90,80),
+		new Student("Vercetti","Tomas",30,"City business","Vice",88,90),
+		new Teacher("White","Walter",50,"Chemestry",20),
+		new Student("Diaz","Ricardo",55,"Weapons distribution","Vice",91,80),
+		new Graduate("Shrader","Hank",40,"Criminalistics","OBN",85,90,"How to catch Heisenberg"),
+		new Teacher("Einsten","Albert",142,"Astronomy",110)
+	};
+
+	//Spealisation:
+	cout << "\n-------------------------------------------------------\n";
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		group[i]->print();
+		cout << "\n-------------------------------------------------------\n";
+	}
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+	}
 }
 
 /*
