@@ -68,12 +68,24 @@ public:
 		os << age;
 		return os;*/
 		return os
-			<< std::setw(15) << std::left << last_name << "|"
-			<< std::setw(10) << std::left << first_name << "|"
-			<< std::setw(5) << std::right << age << "|";
+			<< std::setw(15) << std::left << last_name
+			<< std::setw(10) << std::left << first_name
+			<< std::setw(5) << std::right << age;
+	}
+	virtual std::ofstream& print(std::ofstream& os)const
+	{
+		os
+			<< std::setw(15) << std::left << last_name << ","
+			<< std::setw(10) << std::left << first_name << ","
+			<< std::setw(5) << std::right << age;
+		return os;
 	}
 };
 std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
+std::ofstream& operator<<(std::ofstream& os, const Human& obj)
 {
 	return obj.print(os);
 }
@@ -138,10 +150,20 @@ public:
 	{
 		//return Human::print(os) << " " << speciality + " " + group << " " << rating << " " << attendance;
 		return Human::print(os) << " "
-			<< std::setw(25) << std::left << speciality << "|"
-			<< std::setw(10) << std::left << group << "|"
-			<< std::setw(5) << std::right << rating << "|"
-			<< std::setw(5) << std::right << attendance << "|";
+			<< std::setw(25) << std::left << speciality
+			<< std::setw(10) << std::left << group
+			<< std::setw(5) << std::right << rating
+			<< std::setw(5) << std::right << attendance;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		//return Human::print(os) << " " << speciality + " " + group << " " << rating << " " << attendance;
+		Human::print(os) << ","
+			<< std::setw(25) << std::left << speciality << ","
+			<< std::setw(10) << std::left << group << ","
+			<< std::setw(5) << std::right << rating << ","
+			<< std::setw(5) << std::right << attendance;
+		return os;
 	}
 };
 
@@ -184,8 +206,16 @@ public:
 	{
 		//return Human::print(os) << " " << speciality << " " << experience;
 		return Human::print(os) << " "
-			<< std::setw(36) << std::left << speciality << "|"
-			<< std::setw(5) << std::right << experience << "|";
+			<< std::setw(35) << std::left << speciality
+			<< std::setw(5) << std::right << experience;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		//return Human::print(os) << " " << speciality << " " << experience;
+		Human::print(os) << ","
+			<< std::setw(35) << std::left << speciality << ","
+			<< std::setw(5) << std::right << experience;
+		return os;
 	}
 };
 
@@ -215,7 +245,12 @@ public:
 	//							Methods
 	std::ostream& print(std::ostream& os)const
 	{
-		return Student::print(os) << " " << subject << "|";
+		return Student::print(os) << " " << subject;
+	}
+	std::ofstream& print(std::ofstream& os)const
+	{
+		Student::print(os) << "," << subject;
+		return os;
 	}
 };
 
@@ -256,15 +291,16 @@ void main()
 	}
 	cout << "\n-------------------------------------------------------\n";
 
-	std::ofstream fout("group.txt");
+	std::ofstream fout("group.csv");
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		//group[i]->print();
-		fout << typeid(*group[i]).name() << ":\t" << *group[i] << endl;
+		fout << typeid(*group[i]).name() << ":\t";
+		fout << *group[i] << ";" << endl;
 	}
 	fout.close();
 
-	system("start notepad group.txt");
+	system("start notepad group.csv");
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
