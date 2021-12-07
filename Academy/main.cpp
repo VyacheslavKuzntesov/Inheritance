@@ -46,11 +46,17 @@ public:
 		set_last_name(last_name);
 		set_first_name(first_name);
 		set_age(age);
+#ifdef DEBUG
 		cout << "HConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	virtual ~Human()
 	{
+#ifdef DEBUG
 		cout << "HDestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 
 	//								Nethods:
@@ -75,10 +81,19 @@ public:
 	virtual std::ofstream& print(std::ofstream& os)const
 	{
 		os
-			<< std::setw(15) << std::left << last_name << ","
-			<< std::setw(10) << std::left << first_name << ","
+			<< std::setw(15) << std::left << last_name + ","
+			<< std::setw(10) << std::left << first_name + ","
 			<< std::setw(5) << std::right << age;
 		return os;
+	}
+	virtual std::ifstream& input(std::ifstream& is)
+	{
+		std::getline(is, last_name, ',');
+		std::getline(is, first_name, ',');
+		std::string age_buffer;
+		std::getline(is, age_buffer, ',');
+		age = std::stoi(age_buffer);
+		return is;
 	}
 };
 std::ostream& operator<<(std::ostream& os, const Human& obj)
@@ -88,6 +103,10 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 std::ofstream& operator<<(std::ofstream& os, const Human& obj)
 {
 	return obj.print(os);
+}
+std::ifstream& operator>>(std::ifstream& is, Human& obj)
+{
+	return obj.input(is);
 }
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
@@ -138,11 +157,17 @@ public:
 		this->group = group;
 		this->rating = rating;
 		this->attendance = attendance;
+#ifdef DEBUG
 		cout << "SConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~Student()
 	{
+#ifdef DEBUG
 		cout << "SDestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 
 	//										Methods:
@@ -159,11 +184,21 @@ public:
 	{
 		//return Human::print(os) << " " << speciality + " " + group << " " << rating << " " << attendance;
 		Human::print(os) << ","
-			<< std::setw(25) << std::left << speciality << ","
-			<< std::setw(10) << std::left << group << ","
+			<< std::setw(25) << std::left << speciality + ","
+			<< std::setw(10) << std::left << group + ","
 			<< std::setw(5) << std::right << rating << ","
 			<< std::setw(5) << std::right << attendance;
 		return os;
+	}
+	std::ifstream& input(std::ifstream& is)
+	{
+		Human::input(is);
+		std::getline(is, speciality, ',');
+		std::getline(is, group, ',');
+		is >> rating;
+		is.ignore();
+		is >> attendance;
+		return is;
 	}
 };
 
@@ -194,11 +229,17 @@ public:
 	{
 		set_speciality(speciality);
 		set_experience(experience);
+#ifdef DEBUG
 		cout << "TConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~Teacher()
 	{
+#ifdef DEBUG
 		cout << "TDestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 
 	//											Methods:
@@ -213,9 +254,16 @@ public:
 	{
 		//return Human::print(os) << " " << speciality << " " << experience;
 		Human::print(os) << ","
-			<< std::setw(35) << std::left << speciality << ","
+			<< std::setw(35) << std::left << speciality + ","
 			<< std::setw(5) << std::right << experience;
 		return os;
+	}
+	std::ifstream& input(std::ifstream& is)
+	{
+		Human::input(is);
+		std::getline(is, speciality, ',');
+		is >> experience;
+		return is;
 	}
 };
 
@@ -235,11 +283,17 @@ public:
 	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject) :Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
 		set_subject(subject);
+#ifdef DEBUG
 		cout << "GConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~Graduate()
 	{
+#ifdef DEBUG
 		cout << "GDestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 
 	//							Methods
@@ -252,9 +306,32 @@ public:
 		Student::print(os) << "," << subject;
 		return os;
 	}
+	std::ifstream& input(std::ifstream& is)
+	{
+		Student::input(is);
+		std::getline(is, subject, ';');
+		return is;
+	}
 };
 
+Human* HumanFactory(const std::string& type)
+{
+	if (type.find("class Student") != std::string::npos)
+	{
+		return new Student("last_name", "first_name", 0, "specs", "group", 0, 0);
+	}
+	if (type.find("class Graduate") != std::string::npos)
+	{
+		return new Graduate("last_name", "first_name", 0, "specs", "group", 0, 0, "subject");
+	}
+	if (type.find("class Teacher") != std::string::npos)
+	{
+		return new Teacher("last_name", "first_name", 0, "spec", 0);
+	}
+}
+
 //#define INHERITANCE_CHECK
+//#define SAVE_TO_FILE
 
 void main()
 {
@@ -270,6 +347,8 @@ void main()
 	Graduate gr("Shrader", "Hank", 40, "Criminalistic", "OBN", 90, 90, "How to catch Heisenberg");
 	gr.print();
 #endif // INHERITANCE_CHECK
+
+#ifdef SAVE_TO_FILE
 
 	//Generalisation(обобщение):
 	Human* group[] =
@@ -291,7 +370,7 @@ void main()
 	}
 	cout << "\n-------------------------------------------------------\n";
 
-	std::ofstream fout("group.csv");
+	std::ofstream fout("group.txt");
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		//group[i]->print();
@@ -300,12 +379,62 @@ void main()
 	}
 	fout.close();
 
-	system("start notepad group.csv");
+	system("start notepad group.txt");
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
 	}
+#endif // SAVE_TO_FILE
+
+	std::ifstream fin("group.txt");
+
+	size_t size = 0;
+	Human** group = nullptr;
+
+	if (fin.is_open())
+	{
+		//1)Считаем количество строк в файле, чтобы выделить память для группы:
+		std::string buffer;
+		for (size = 0; !fin.eof(); size++)
+		{
+			std::getline(fin, buffer, ';');
+		}
+		cout << "Размер группы: " << size << endl;
+		cout << "Позиция " << fin.tellg() << endl;
+		//2)Выделяем память для группы:
+		group = new Human * [--size]{};
+		//3) Возвращаемся в начало файла для того чтобы уже прочитать строки и загрузить их в массив
+		fin.clear();
+		fin.seekg(0);
+		cout << "Позиция " << fin.tellg() << endl;
+		//4) Заново читаем файл, и сохраняем его строки в объекты:
+		for (int i = 0; i < size; i++)
+		{
+			std::getline(fin, buffer, ':');
+			group[i] = HumanFactory(buffer);
+			fin >> *group[i];
+			cout << *group[i] << endl;
+		}
+		fin.close();
+	}
+	else
+	{
+		std::cerr << "Error: file not found :-(\n";
+	}
+
+	cout << "\n-------------------------------------------------------\n";
+	for (int i = 0; i < size; i++)
+	{
+		cout << *group[i] << endl;
+	}
+	cout << "\n-------------------------------------------------------\n";
+
+	for (int i = 0; i < size; i++)
+	{
+		delete group[i];
+	}
+	delete[] group;
 }
 
 
