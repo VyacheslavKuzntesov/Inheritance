@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include<ctime>
 #include<iomanip>
@@ -67,9 +68,9 @@ public:
 		os << age;
 		return os;*/
 		return os
-			<< std::setw(15) << std::left << last_name
-			<< std::setw(10) << std::left << first_name
-			<< std::setw(5) << std::right << age;
+			<< std::setw(15) << std::left << last_name << "|"
+			<< std::setw(10) << std::left << first_name << "|"
+			<< std::setw(5) << std::right << age << "|";
 	}
 };
 std::ostream& operator<<(std::ostream& os, const Human& obj)
@@ -137,10 +138,10 @@ public:
 	{
 		//return Human::print(os) << " " << speciality + " " + group << " " << rating << " " << attendance;
 		return Human::print(os) << " "
-			<< std::setw(25) << std::left << speciality
-			<< std::setw(10) << std::left << group
-			<< std::setw(5) << std::right << rating
-			<< std::setw(5) << std::right << attendance;
+			<< std::setw(25) << std::left << speciality << "|"
+			<< std::setw(10) << std::left << group << "|"
+			<< std::setw(5) << std::right << rating << "|"
+			<< std::setw(5) << std::right << attendance << "|";
 	}
 };
 
@@ -183,8 +184,8 @@ public:
 	{
 		//return Human::print(os) << " " << speciality << " " << experience;
 		return Human::print(os) << " "
-			<< std::setw(35) << std::left << speciality
-			<< std::setw(5) << std::right << experience;
+			<< std::setw(36) << std::left << speciality << "|"
+			<< std::setw(5) << std::right << experience << "|";
 	}
 };
 
@@ -214,7 +215,7 @@ public:
 	//							Methods
 	std::ostream& print(std::ostream& os)const
 	{
-		return Student::print(os) << " " << subject;
+		return Student::print(os) << " " << subject << "|";
 	}
 };
 
@@ -255,11 +256,22 @@ void main()
 	}
 	cout << "\n-------------------------------------------------------\n";
 
+	std::ofstream fout("group.txt");
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		//group[i]->print();
+		fout << typeid(*group[i]).name() << ":\t" << *group[i] << endl;
+	}
+	fout.close();
+
+	system("start notepad group.txt");
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
 	}
 }
+
 
 /*
 	То время как базовый класс разобщает разные классы и относит их в отдельный класс Дочерние классы расширяют свойства базового класса и доролняют их своими собственными свойствами.
