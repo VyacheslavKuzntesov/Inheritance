@@ -183,7 +183,6 @@ namespace Geometry
 		{
 			cout << typeid(*this).name() << endl;
 			cout << "Радиус круга:\t" << radius << endl;
-
 			cout << "Площадь:\t" << get_area() << endl;
 			cout << "Периметр:\t" << get_perimeter() << endl;
 			draw();
