@@ -394,6 +394,7 @@ void main()
 
 	if (fin.is_open())
 	{
+		std::string str(" ");
 		//1)Считаем количество строк в файле, чтобы выделить память для группы:
 		std::string buffer;
 		for (size = 0; !fin.eof(); size++)

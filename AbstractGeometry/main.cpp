@@ -1,4 +1,4 @@
-#include<Windows.h>
+п»ї#include<Windows.h>
 #include<iostream>
 using namespace std;
 
@@ -23,9 +23,9 @@ namespace Geometry
 		Shape(Color color) :color(color) {}
 		virtual ~Shape() {}
 
-		virtual double get_area()const = 0;			//Площадь фигуры
-		virtual double get_perimeter()const = 0;	//Периметр фигуры
-		virtual void draw()const = 0;				//Любую фигуру можно нарисовать
+		virtual double get_area()const = 0;			//РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹
+		virtual double get_perimeter()const = 0;	//РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹
+		virtual void draw()const = 0;				//Р›СЋР±СѓСЋ С„РёРіСѓСЂСѓ РјРѕР¶РЅРѕ РЅР°СЂРёСЃРѕРІР°С‚СЊ
 	};
 
 	class Square :public Shape
@@ -75,9 +75,9 @@ namespace Geometry
 		void info()
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны:\t" << side << endl;
-			cout << "Площадь:\t" << get_area() << endl;
-			cout << "Периметр:\t" << get_perimeter() << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹:\t" << side << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ:\t" << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ:\t" << get_perimeter() << endl;
 			draw();
 		}
 	};
@@ -137,10 +137,10 @@ namespace Geometry
 		void info()
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны A:\t" << side_A << endl;
-			cout << "Длина стороны B:\t" << side_B << endl;
-			cout << "Площадь:\t" << get_area() << endl;
-			cout << "Периметр:\t" << get_perimeter() << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ A:\t" << side_A << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ B:\t" << side_B << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ:\t" << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ:\t" << get_perimeter() << endl;
 			draw();
 		}
 	};
@@ -176,15 +176,15 @@ namespace Geometry
 		{
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 			SetConsoleTextAttribute(hConsole, color);
-			cout << "Здесь должен быть круг :-)";
+			cout << "Р—РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РєСЂСѓРі :-)";
 			SetConsoleTextAttribute(hConsole, Color::console_default);
 		}
 		void info()
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Радиус круга:\t" << radius << endl;
-			cout << "Площадь:\t" << get_area() << endl;
-			cout << "Периметр:\t" << get_perimeter() << endl;
+			cout << "Р Р°РґРёСѓСЃ РєСЂСѓРіР°:\t" << radius << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ:\t" << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ:\t" << get_perimeter() << endl;
 			draw();
 		}
 	};
@@ -207,6 +207,6 @@ void main()
 }
 
 /*
-	enum (Enumeration или перечисление) - набор именнованых констант типа 'int'
+	enum (Enumeration РёР»Рё РїРµСЂРµС‡РёСЃР»РµРЅРёРµ) - РЅР°Р±РѕСЂ РёРјРµРЅРЅРѕРІР°РЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚ С‚РёРїР° 'int'
 
 */
