@@ -3,6 +3,7 @@
 #include<iostream>
 #include<iostream>
 #include<conio.h>
+#include<thread>
 using namespace std;
 
 //#define CONSOLE_DRAWING
@@ -71,6 +72,13 @@ namespace Geometry
 		virtual double get_area()const = 0;			//Площадь фигуры
 		virtual double get_perimeter()const = 0;	//Периметр фигуры
 		virtual void draw()const = 0;				//Любую фигуру можно нарисовать
+		void call_draw()const
+		{
+			while (true)
+			{
+				draw();
+			}
+		}
 	};
 
 	class Square :public Shape
@@ -226,13 +234,22 @@ namespace Geometry
 			cout << "Длина стороны B:\t" << side_B << endl;
 			cout << "Площадь:\t" << get_area() << endl;
 			cout << "Периметр:\t" << get_perimeter() << endl;
-			char key = 0;
+			/*char key = 0;
 			while (key != 27)
 			{
 				draw();
 				if (_kbhit())key = _getch();
-			}
+			}*/
+			std::thread draw_thread(&Rectangle::call_draw, this);
+			draw_thread.detach();
 			cout << endl;
+		}
+		void call_draw()const
+		{
+			while (true)
+			{
+				draw();
+			}
 		}
 	};
 
@@ -302,13 +319,22 @@ namespace Geometry
 			cout << "Высота треугольника: " << get_height() << endl;
 			cout << "Высота треугольника: " << get_area() << endl;
 			cout << "Высота треугольника: " << get_perimeter() << endl;
-			char key = 0;
-			while (key != 27)
+			//char key = 0;
+			//while (key != 27)
+			//{
+			//	draw();
+			//	if (_kbhit())key = _getch(); //_kbhit() ожидает нажатие клавиши и возвращает ненулевое значение при ее нажатии
+			//}
+			std::thread draw_thread(&Shape::call_draw, this);
+			draw_thread.detach();
+		}
+		/*void call_draw()const
+		{
+			while (true)
 			{
 				draw();
-				if (_kbhit())key = _getch(); //_kbhit() ожидает нажатие клавиши и возвращает ненулевое значение при ее нажатии
 			}
-		}
+		}*/
 	};
 
 	class Circle :public Shape
@@ -378,11 +404,20 @@ namespace Geometry
 			cout << "Радиус круга:\t" << radius << endl;
 			cout << "Площадь:\t" << get_area() << endl;
 			cout << "Периметр:\t" << get_perimeter() << endl;
-			char key = 0;
-			while (key != 27)
+			//char key = 0;
+			//while (key != 27)
+			//{
+			//	draw();
+			//	if (_kbhit())key = _getch(); //_kbhit() ожидает нажатие клавиши и возвращает ненулевое значение при ее нажатии
+			//}
+			std::thread draw_thread(&Circle::call_draw, this);
+			draw_thread.detach();
+		}
+		void call_draw()const
+		{
+			while (true)
 			{
 				draw();
-				if (_kbhit())key = _getch(); //_kbhit() ожидает нажатие клавиши и возвращает ненулевое значение при ее нажатии
 			}
 		}
 	};
