@@ -132,7 +132,7 @@ namespace Geometry
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 			ReleaseDC(hwnd, hdc);
-	}
+		}
 
 		void info()
 		{
@@ -148,7 +148,7 @@ namespace Geometry
 			}
 			cout << endl;
 		}
-};
+	};
 
 	class Rectangle :public Shape
 	{
@@ -386,10 +386,171 @@ namespace Geometry
 			}
 		}
 	};
+
+	class IsoscelesTriangle : public Triangle
+	{
+		double side_A;
+		double side_B;
+	public:
+		IsoscelesTriangle(double side_A, double side_B, Color color = Color::white, unsigned int line_width = 5, unsigned int start_x = 400, unsigned int start_y = 100) :Triangle(color, line_width, start_x, start_y)
+		{
+			set_side_A(side_A);
+			set_side_B(side_B);
+		}
+		~IsoscelesTriangle() {}
+		void set_side_A(double side_A)
+		{
+			if (side_A <= 0)side_A = 1;
+			this->side_A = side_A;
+		}
+		void set_side_B(double side_B)
+		{
+			if (side_B <= 0)side_B = 1;
+			this->side_B = side_B;
+		}
+		double get_side_A()const
+		{
+			return side_A;
+		}
+		double get_side_B()const
+		{
+			return side_B;
+		}
+		double get_height()const
+		{
+			return sqrt(side_A * side_A - pow(side_B / 2, 2));
+		}
+		double get_area()const
+		{
+			return (side_B * get_height()) / 2;
+		}
+		double get_perimeter()const
+		{
+			return side_A * 2 + side_B;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			/*int start_x = 400;
+			int start_y = 200;*/
+			const POINT verticies[] =
+			{
+				{start_x,start_y + side_A},
+				{start_x + side_B,start_y + side_A},
+				{start_x + side_B / 2,start_y + side_A - get_height()}
+			};
+
+			Polygon(hdc, verticies, sizeof(verticies) / sizeof(POINT));
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+		}
+		void info() const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Длина сторон:\t" << get_side_A() << endl;
+			cout << "Длина основания:\t" << get_side_B() << endl;
+			cout << "Высота треуголька:\t" << get_height() << endl;
+			cout << "Площадь треугольника:\t" << get_area() << endl;
+			cout << "Периметр треугольника:\t" << get_perimeter() << endl;
+			char key;
+			do
+			{
+				draw();
+				if (key = _kbhit())key = _getch();
+			} while (key != 27);
+			system("CLS");
+		}
+	};
+
+	class RightTriangle : public Triangle
+	{
+		double side_A;
+	public:
+		RightTriangle(double side_A, Color color = Color::white, unsigned int line_width = 5, unsigned int start_x = 400, unsigned int start_y = 100) :Triangle(color, line_width, start_x, start_y)
+		{
+			set_side_A(side_A);
+		}
+		~RightTriangle() {}
+
+		void set_side_A(double side_A)
+		{
+			if (side_A <= 0)side_A = 1;
+			this->side_A = side_A;
+		}
+
+		double get_side_A(double side_A)
+		{
+			return side_A;
+		}
+		double get_height()const
+		{
+			return sqrt(side_A * side_A - (pow(((sqrt(pow(side_A, 2) + pow(side_A, 2))) / 2), 2)));
+		}
+		double get_area()const
+		{
+			return (side_A * side_A) / 2;
+		}
+		double get_perimeter()const
+		{
+			return side_A + side_A + (sqrt(pow(side_A, 2) + pow(side_A, 2)));
+		}
+		double get_hypotenuse()const
+		{
+			return  sqrt(pow(side_A, 2) + pow(side_A, 2));
+		}
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			const POINT verticies[] =
+			{
+				{start_x,start_y},
+				{start_x,start_y + side_A},
+				{start_x + side_A,start_y + side_A}
+			};
+
+			Polygon(hdc, verticies, sizeof(verticies) / sizeof(POINT));
+
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+			ReleaseDC(hwnd, hdc);
+		}
+		void info() const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Длина катетов:\t" << side_A << endl;
+			cout << "Длина гипотенузы:\t" << get_hypotenuse() << endl;
+			cout << "Высота треуголька:\t" << get_height() << endl;
+			cout << "Площадь треугольника:\t" << get_area() << endl;
+			cout << "Периметр треугольника:\t" << get_perimeter() << endl;
+			char key;
+			do
+			{
+				draw();
+				if (key = _kbhit())key = _getch();
+			} while (key != 27);
+			system("CLS");
+		}
+	};
 }
 
 void main()
 {
+	srand((unsigned int)time(NULL));
 	setlocale(LC_ALL, "");
 
 	//Shape shape(Color::consol_blue);
@@ -405,6 +566,51 @@ void main()
 
 	Geometry::EquilateralTriangle et(150, Geometry::Color::green, 10, 200, 50);
 	et.info();
+
+	Geometry::IsoscelesTriangle isotri(150, Geometry::Color::console_red);
+	isotri.info();
+
+	Geometry::RightTriangle rightri(150, Geometry::Color::console_yellow);
+	rightri.info();
+
+	int random = 0;
+	cout << "Введите число рандомных фигур: "; cin >> random;
+	for (int i = 0; i < random; i++)
+	{
+		int a = rand() % 61 - 1;
+		int b = rand() % 900 - 80;
+		int c = rand() % 900 - 80;
+		if (a<11&&1<=a)
+		{
+			Geometry::Square square(b, Geometry::Color::console_blue);
+			square.info();
+		}
+		if (a < 21 && 11 <= a)
+		{
+			Geometry::Rectangle rect(b, c, Geometry::Color::console_red);
+			rect.info();
+		}
+		if (a < 31 && 21 <= a)
+		{
+			Geometry::Circle cir(b, Geometry::Color::yellow);
+			cir.info();
+		}
+		if (a < 41 && 31 <= a)
+		{
+			Geometry::EquilateralTriangle et(b, Geometry::Color::green);
+			et.info();
+		}
+		if (a < 51 && 41 <= a)
+		{
+			Geometry::IsoscelesTriangle isotri(b, Geometry::Color::console_red);
+			isotri.info();
+		}
+		if (a < 61 && 51 <= a)
+		{
+			Geometry::RightTriangle rightri(b, Geometry::Color::console_yellow);
+			rightri.info();
+		}
+	}
 }
 
 /*
