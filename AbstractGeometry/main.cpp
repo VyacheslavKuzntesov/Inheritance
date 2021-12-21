@@ -577,37 +577,37 @@ void main()
 	cout << "Введите число рандомных фигур: "; cin >> random;
 	for (int i = 0; i < random; i++)
 	{
-		int a = rand() % 61 - 1;
-		int b = rand() % 900 - 80;
-		int c = rand() % 900 - 80;
-		if (a<11&&1<=a)
+		int Shape = rand() % 61 - 1;
+		int side_A = rand() % 900 - 80;
+		int side_B = rand() % 900 - 80;
+		if (Shape < 11 && 1 <= Shape)
 		{
-			Geometry::Square square(b, Geometry::Color::console_blue);
+			Geometry::Square square(side_A, Geometry::Color::console_blue);
 			square.info();
 		}
 		if (a < 21 && 11 <= a)
 		{
-			Geometry::Rectangle rect(b, c, Geometry::Color::console_red);
+			Geometry::Rectangle rect(side_A, side_B, Geometry::Color::console_red);
 			rect.info();
 		}
 		if (a < 31 && 21 <= a)
 		{
-			Geometry::Circle cir(b, Geometry::Color::yellow);
+			Geometry::Circle cir(side_A, Geometry::Color::yellow);
 			cir.info();
 		}
 		if (a < 41 && 31 <= a)
 		{
-			Geometry::EquilateralTriangle et(b, Geometry::Color::green);
+			Geometry::EquilateralTriangle et(side_A, Geometry::Color::green);
 			et.info();
 		}
 		if (a < 51 && 41 <= a)
 		{
-			Geometry::IsoscelesTriangle isotri(b, Geometry::Color::console_red);
+			Geometry::IsoscelesTriangle isotri(side_A, Geometry::Color::console_red);
 			isotri.info();
 		}
 		if (a < 61 && 51 <= a)
 		{
-			Geometry::RightTriangle rightri(b, Geometry::Color::console_yellow);
+			Geometry::RightTriangle rightri(side_A, Geometry::Color::console_yellow);
 			rightri.info();
 		}
 	}
