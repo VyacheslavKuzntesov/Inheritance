@@ -573,7 +573,7 @@ void main()
 	Geometry::RightTriangle rightri(150, Geometry::Color::console_yellow);
 	rightri.info();
 
-	int random = 0;
+	int random;
 	cout << "Введите число рандомных фигур: "; cin >> random;
 	for (int i = 0; i < random; i++)
 	{
