@@ -585,27 +585,27 @@ void main()
 			Geometry::Square square(side_A, Geometry::Color::console_blue);
 			square.info();
 		}
-		if (a < 21 && 11 <= a)
+		if (Shape < 21 && 11 <= Shape)
 		{
 			Geometry::Rectangle rect(side_A, side_B, Geometry::Color::console_red);
 			rect.info();
 		}
-		if (a < 31 && 21 <= a)
+		if (Shape < 31 && 21 <= Shape)
 		{
 			Geometry::Circle cir(side_A, Geometry::Color::yellow);
 			cir.info();
 		}
-		if (a < 41 && 31 <= a)
+		if (Shape < 41 && 31 <= Shape)
 		{
 			Geometry::EquilateralTriangle et(side_A, Geometry::Color::green);
 			et.info();
 		}
-		if (a < 51 && 41 <= a)
+		if (Shape < 51 && 41 <= Shape)
 		{
 			Geometry::IsoscelesTriangle isotri(side_A, Geometry::Color::console_red);
 			isotri.info();
 		}
-		if (a < 61 && 51 <= a)
+		if (Shape < 61 && 51 <= Shape)
 		{
 			Geometry::RightTriangle rightri(side_A, Geometry::Color::console_yellow);
 			rightri.info();
